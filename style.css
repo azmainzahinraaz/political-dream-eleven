@@ -1,0 +1,18 @@
+body {
+    font-family: Arial, sans-serif;
+    text-align: center;
+}
+#team-formation {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+}
+.position {
+    padding: 10px;
+    border: 2px solid black;
+    width: 200px;
+    text-align: center;
+    background-color: lightgray;
+    cursor: pointer;
+}
