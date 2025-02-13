@@ -22,7 +22,7 @@
         }
         .formation {
             display: grid;
-            grid-template-columns: repeat(3, 1fr);
+            grid-template-columns: repeat(1, 1fr);
             gap: 10px;
             padding: 20px;
         }
@@ -54,14 +54,6 @@
 <body>
     <div class="container" id="capture">
         <h1 class="text-3xl font-bold mb-5">Political Dream Eleven</h1>
-        
-        <div class="formation">
-            <div class="player-card">
-                <input type="file" class="player-img" accept="image/*">
-                <img class="player-preview hidden">
-                <input type="text" class="player-name" placeholder="Enter Goalkeeper Name" class="border p-1">
-            </div>
-        </div>
         
         <div class="formation" id="players-list"></div>
         
@@ -119,12 +111,10 @@
         });
 
         document.getElementById("share-button").addEventListener("click", () => {
-            const imageURL = document.querySelector("#capture").toDataURL("image/jpeg");
             const shareText = "Check out my Political Dream Eleven!";
-            
-            const facebookURL = `https://www.facebook.com/sharer/sharer.php?u=${imageURL}`;
-            const twitterURL = `https://twitter.com/intent/tweet?text=${shareText}&url=${imageURL}`;
-            const linkedinURL = `https://www.linkedin.com/sharing/share-offsite/?url=${imageURL}`;
+            const facebookURL = `https://www.facebook.com/sharer/sharer.php?u=${window.location.href}`;
+            const twitterURL = `https://twitter.com/intent/tweet?text=${shareText}&url=${window.location.href}`;
+            const linkedinURL = `https://www.linkedin.com/sharing/share-offsite/?url=${window.location.href}`;
             
             window.open(facebookURL, "_blank");
             window.open(twitterURL, "_blank");
