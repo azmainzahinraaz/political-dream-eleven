@@ -13,22 +13,26 @@
             font-family: Arial, sans-serif;
         }
         .container {
-            max-width: 800px;
+            max-width: 900px;
             margin: auto;
             background: white;
             padding: 20px;
             border-radius: 10px;
             box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
         }
+        .formation {
+            display: grid;
+            gap: 10px;
+            margin-top: 20px;
+        }
         .player-card {
             display: flex;
+            flex-direction: column;
             align-items: center;
-            justify-content: space-between;
             background: #f8f9fa;
-            padding: 15px;
+            padding: 10px;
             border-radius: 10px;
             box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-            margin: 10px;
         }
         img {
             width: 80px;
@@ -47,12 +51,23 @@
             border-radius: 5px;
             cursor: pointer;
         }
-        .coach-card {
-            margin-top: 20px;
-            padding: 15px;
-            background: #e3f2fd;
-            border-radius: 10px;
-            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        .formation-4-4-2 {
+            display: grid;
+            grid-template-rows: repeat(5, auto);
+            grid-template-columns: repeat(4, 1fr);
+            gap: 10px;
+            justify-items: center;
+        }
+        .goalkeeper {
+            grid-column: span 4;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        .coach {
+            grid-column: span 1;
+            align-self: center;
+            margin-left: auto;
         }
     </style>
 </head>
@@ -60,24 +75,18 @@
     <div class="container" id="capture">
         <h1 class="text-3xl font-bold mb-5">Political Dream Eleven</h1>
         
-        <div class="player-card">
-            <label class="upload-btn" for="goalkeeper-img">Upload Goalkeeper Image</label>
-            <input type="file" id="goalkeeper-img" accept="image/*">
-            <img id="goalkeeper-preview" src="">
-            <input type="text" id="goalkeeper-name" placeholder="Enter Goalkeeper Name" class="border p-1">
+        <div class="formation-4-4-2" id="players-list"></div>
+        
+        <div class="player-card goalkeeper">
+            <label class="upload-btn">Upload GK<input type="file" id="goalkeeper-img" accept="image/*"></label>
+            <img id="goalkeeper-preview">
+            <input type="text" id="goalkeeper-name" class="border p-1" placeholder="Enter Goalkeeper Name">
         </div>
         
-        <div id="players-list"></div>
-        
-        <div class="coach-card">
-            <label class="upload-btn" for="coach-img">Upload Coach Image</label>
-            <input type="file" id="coach-img" accept="image/*">
-            <img id="coach-preview" src="">
-            <select id="coach-select" class="border p-1">
-                <option>Select Coach</option>
-                <option>Coach 1</option>
-                <option>Coach 2</option>
-            </select>
+        <div class="coach-card coach">
+            <label class="upload-btn">Upload Coach Image<input type="file" id="coach-img" accept="image/*"></label>
+            <img id="coach-preview">
+            <p class="font-bold">Dr. Yunus</p>
         </div>
 
         <button id="save-button" class="mt-5 bg-green-500 text-white py-2 px-4 rounded">Save as Image</button>
@@ -92,18 +101,21 @@
 
         function createPlayerCards() {
             const container = document.getElementById("players-list");
-            for (let i = 0; i < 10; i++) {
+            const positions = ["ST", "ST", "LM", "CM", "CM", "RM", "LB", "CB", "CB", "RB"];
+            
+            positions.forEach((position, index) => {
                 const div = document.createElement("div");
                 div.classList.add("player-card");
                 div.innerHTML = `
-                    <label class="upload-btn">Upload Player Image<input type="file" class="player-img" accept="image/*"></label>
+                    <label class="upload-btn">Upload<input type="file" class="player-img" accept="image/*"></label>
                     <img class="player-preview">
                     <select class="player-select border p-1">
                         ${politicians.map(name => `<option>${name}</option>`).join('')}
                     </select>
+                    <p class="font-bold">${position}</p>
                 `;
                 container.appendChild(div);
-            }
+            });
         }
 
         function previewImage(inputClass, imgClass) {
