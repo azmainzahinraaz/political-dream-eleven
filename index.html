@@ -7,7 +7,7 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/tailwindcss/2.2.19/tailwind.min.css">
     <style>
         body {
-            background: linear-gradient(to right, #4facfe, #00f2fe);
+            background: linear-gradient(to right, #ff7e5f, #feb47b);
             text-align: center;
             font-family: Arial, sans-serif;
         }
@@ -26,6 +26,14 @@
             box-shadow: 0 2px 4px rgba(0,0,0,0.1);
             margin: 10px;
         }
+        img {
+            width: 80px;
+            height: 80px;
+            object-fit: cover;
+            border-radius: 50%;
+            display: block;
+            margin: auto;
+        }
     </style>
 </head>
 <body>
@@ -33,19 +41,17 @@
         <h1 class="text-3xl font-bold mb-5">Political Dream Eleven</h1>
         
         <div class="player-card">
-            <img src="goalkeeper.png" alt="Goalkeeper" class="w-24 mx-auto">
+            <input type="file" id="goalkeeper-img" accept="image/*">
+            <img id="goalkeeper-preview" src="" alt="Goalkeeper" class="hidden">
             <p class="font-semibold">Goalkeeper</p>
-            <select class="border p-1 mt-2 w-full" id="goalkeeper-select">
-                <option>Select Politician</option>
-            </select>
+            <select class="border p-1 mt-2 w-full" id="goalkeeper-select"></select>
         </div>
         
         <div class="player-card">
-            <img src="coach.png" alt="Coach" class="w-24 mx-auto">
+            <input type="file" id="coach-img" accept="image/*">
+            <img id="coach-preview" src="" alt="Coach" class="hidden">
             <p class="font-semibold">Coach</p>
-            <select class="border p-1 mt-2 w-full" id="coach-select">
-                <option>Select Politician</option>
-            </select>
+            <select class="border p-1 mt-2 w-full" id="coach-select"></select>
         </div>
         
         <button id="share-button" class="mt-5 bg-blue-500 text-white py-2 px-4 rounded">Share Your Dream Eleven</button>
@@ -53,19 +59,33 @@
     
     <script>
         const politicians = [
-            { name: "Politician A", image: "a.png" },
-            { name: "Politician B", image: "b.png" },
-            { name: "Politician C", image: "c.png" }
+            "Sheikh Hasina", "Khaleda Zia", "Sajib Wazed Joy", "Obaidul Quader", "Mirza Fakhrul Islam Alamgir"
         ];
 
         function populateSelect(id) {
             const select = document.getElementById(id);
+            select.innerHTML = '<option>Select Politician</option>';
             politicians.forEach(politician => {
                 let option = document.createElement("option");
-                option.textContent = politician.name;
+                option.textContent = politician;
                 select.appendChild(option);
             });
         }
+
+        function previewImage(inputId, imgId) {
+            document.getElementById(inputId).addEventListener("change", function(event) {
+                const reader = new FileReader();
+                reader.onload = function() {
+                    const img = document.getElementById(imgId);
+                    img.src = reader.result;
+                    img.classList.remove("hidden");
+                }
+                reader.readAsDataURL(event.target.files[0]);
+            });
+        }
+
+        previewImage("goalkeeper-img", "goalkeeper-preview");
+        previewImage("coach-img", "coach-preview");
 
         populateSelect("goalkeeper-select");
         populateSelect("coach-select");
@@ -80,9 +100,7 @@
             const twitterShare = `https://twitter.com/intent/tweet?text=${encodeURIComponent(shareText)}&url=${encodeURIComponent(url)}`;
             const whatsappShare = `https://api.whatsapp.com/send?text=${encodeURIComponent(shareText + ' ' + url)}`;
             
-            const shareOptions = `\nFacebook: ${facebookShare}\nTwitter: ${twitterShare}\nWhatsApp: ${whatsappShare}`;
-            
-            alert("Share on:\n" + shareOptions);
+            window.open(facebookShare, '_blank');
         });
     </script>
 </body>
