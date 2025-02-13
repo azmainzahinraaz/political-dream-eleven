@@ -4,46 +4,86 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Political Dream Eleven</title>
-    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/tailwindcss/2.2.19/tailwind.min.css">
+    <style>
+        body {
+            background: linear-gradient(to right, #4facfe, #00f2fe);
+            text-align: center;
+            font-family: Arial, sans-serif;
+        }
+        .container {
+            max-width: 600px;
+            margin: auto;
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+        }
+        .player-card {
+            background: #f8f9fa;
+            padding: 15px;
+            border-radius: 10px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            margin: 10px;
+        }
+    </style>
 </head>
 <body>
-    <h1>My Political Dream Eleven</h1>
-    <div id="team-formation">
-        <div class="position" id="goalkeeper">Goalkeeper</div>
-        <div class="position" id="coach">Coach</div>
-        <div class="players">
-            <div class="position">Player 1</div>
-            <div class="position">Player 2</div>
-            <div class="position">Player 3</div>
-            <div class="position">Player 4</div>
-            <div class="position">Player 5</div>
-            <div class="position">Player 6</div>
-            <div class="position">Player 7</div>
-            <div class="position">Player 8</div>
-            <div class="position">Player 9</div>
+    <div class="container">
+        <h1 class="text-3xl font-bold mb-5">Political Dream Eleven</h1>
+        
+        <div class="player-card">
+            <img src="goalkeeper.png" alt="Goalkeeper" class="w-24 mx-auto">
+            <p class="font-semibold">Goalkeeper</p>
+            <select class="border p-1 mt-2 w-full" id="goalkeeper-select">
+                <option>Select Politician</option>
+            </select>
         </div>
+        
+        <div class="player-card">
+            <img src="coach.png" alt="Coach" class="w-24 mx-auto">
+            <p class="font-semibold">Coach</p>
+            <select class="border p-1 mt-2 w-full" id="coach-select">
+                <option>Select Politician</option>
+            </select>
+        </div>
+        
+        <button id="share-button" class="mt-5 bg-blue-500 text-white py-2 px-4 rounded">Share Your Dream Eleven</button>
     </div>
-    <script src="script.js"></script>
-<button id="share-button" class="mt-5 bg-blue-500 text-white py-2 px-4 rounded">
-    Share Your Dream Eleven
-</button>
+    
+    <script>
+        const politicians = [
+            { name: "Politician A", image: "a.png" },
+            { name: "Politician B", image: "b.png" },
+            { name: "Politician C", image: "c.png" }
+        ];
 
-<script>
-    document.getElementById("share-button").addEventListener("click", () => {
-        const goalkeeper = document.getElementById("goalkeeper-select").value;
-        const coach = document.getElementById("coach-select").value;
-        const shareText = `My Political Dream Eleven: Goalkeeper - ${goalkeeper}, Coach - ${coach}. Build yours now!`;
-
-        if (navigator.share) {
-            navigator.share({
-                title: "Political Dream Eleven",
-                text: shareText,
-                url: window.location.href
-            }).catch(err => console.error("Error sharing", err));
-        } else {
-            alert("Sharing not supported on this browser. Copy this text: " + shareText);
+        function populateSelect(id) {
+            const select = document.getElementById(id);
+            politicians.forEach(politician => {
+                let option = document.createElement("option");
+                option.textContent = politician.name;
+                select.appendChild(option);
+            });
         }
-    });
-</script>
+
+        populateSelect("goalkeeper-select");
+        populateSelect("coach-select");
+
+        document.getElementById("share-button").addEventListener("click", () => {
+            const goalkeeper = document.getElementById("goalkeeper-select").value;
+            const coach = document.getElementById("coach-select").value;
+            const shareText = `My Political Dream Eleven: Goalkeeper - ${goalkeeper}, Coach - ${coach}. Build yours now!`;
+            const url = window.location.href;
+            
+            const facebookShare = `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(url)}`;
+            const twitterShare = `https://twitter.com/intent/tweet?text=${encodeURIComponent(shareText)}&url=${encodeURIComponent(url)}`;
+            const whatsappShare = `https://api.whatsapp.com/send?text=${encodeURIComponent(shareText + ' ' + url)}`;
+            
+            const shareOptions = `\nFacebook: ${facebookShare}\nTwitter: ${twitterShare}\nWhatsApp: ${whatsappShare}`;
+            
+            alert("Share on:\n" + shareOptions);
+        });
+    </script>
 </body>
 </html>
