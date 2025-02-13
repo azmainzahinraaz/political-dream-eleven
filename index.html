@@ -20,15 +20,21 @@
             border-radius: 10px;
             box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
         }
+        .formation {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 10px;
+            padding: 20px;
+        }
         .player-card {
             display: flex;
+            flex-direction: column;
             align-items: center;
-            justify-content: space-between;
+            justify-content: center;
             background: #f8f9fa;
-            padding: 15px;
+            padding: 10px;
             border-radius: 10px;
             box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-            margin: 10px;
         }
         img {
             width: 80px;
@@ -49,22 +55,20 @@
     <div class="container" id="capture">
         <h1 class="text-3xl font-bold mb-5">Political Dream Eleven</h1>
         
-        <div class="player-card">
-            <input type="file" id="goalkeeper-img" accept="image/*">
-            <img id="goalkeeper-preview" src="" class="hidden">
-            <input type="text" id="goalkeeper-name" placeholder="Enter Goalkeeper Name" class="border p-1">
+        <div class="formation">
+            <div class="player-card">
+                <input type="file" class="player-img" accept="image/*">
+                <img class="player-preview hidden">
+                <input type="text" class="player-name" placeholder="Enter Goalkeeper Name" class="border p-1">
+            </div>
         </div>
         
-        <div id="players-list"></div>
+        <div class="formation" id="players-list"></div>
         
         <div class="coach-card">
             <input type="file" id="coach-img" accept="image/*">
             <img id="coach-preview" src="" class="hidden">
-            <select id="coach-select" class="border p-1">
-                <option>Select Coach</option>
-                <option>Coach 1</option>
-                <option>Coach 2</option>
-            </select>
+            <input type="text" id="coach-name" value="ডক্টর ইউনুস" readonly class="border p-1">
         </div>
 
         <button id="save-button" class="mt-5 bg-green-500 text-white py-2 px-4 rounded">Save as Image</button>
@@ -85,9 +89,7 @@
                 div.innerHTML = `
                     <input type="file" class="player-img" accept="image/*">
                     <img class="player-preview hidden">
-                    <select class="player-select border p-1">
-                        ${politicians.map(name => `<option>${name}</option>`).join('')}
-                    </select>
+                    <input type="text" class="player-name border p-1" placeholder="Enter Player Name">
                 `;
                 container.appendChild(div);
             }
@@ -105,20 +107,28 @@
             });
         }
 
-        previewImage("#goalkeeper-img", "#goalkeeper-preview");
         previewImage("#coach-img", "#coach-preview");
 
         document.getElementById("save-button").addEventListener("click", () => {
-            html2canvas(document.getElementById("capture")).then(canvas => {
+            html2canvas(document.getElementById("capture"), {scale: 2}).then(canvas => {
                 let link = document.createElement("a");
-                link.download = "dream-eleven.png";
-                link.href = canvas.toDataURL("image/png");
+                link.download = "dream-eleven.jpg";
+                link.href = canvas.toDataURL("image/jpeg", 0.9);
                 link.click();
             });
         });
 
         document.getElementById("share-button").addEventListener("click", () => {
-            alert("Share feature coming soon!");
+            const imageURL = document.querySelector("#capture").toDataURL("image/jpeg");
+            const shareText = "Check out my Political Dream Eleven!";
+            
+            const facebookURL = `https://www.facebook.com/sharer/sharer.php?u=${imageURL}`;
+            const twitterURL = `https://twitter.com/intent/tweet?text=${shareText}&url=${imageURL}`;
+            const linkedinURL = `https://www.linkedin.com/sharing/share-offsite/?url=${imageURL}`;
+            
+            window.open(facebookURL, "_blank");
+            window.open(twitterURL, "_blank");
+            window.open(linkedinURL, "_blank");
         });
 
         createPlayerCards();
