@@ -24,5 +24,26 @@
         </div>
     </div>
     <script src="script.js"></script>
+<button id="share-button" class="mt-5 bg-blue-500 text-white py-2 px-4 rounded">
+    Share Your Dream Eleven
+</button>
+
+<script>
+    document.getElementById("share-button").addEventListener("click", () => {
+        const goalkeeper = document.getElementById("goalkeeper-select").value;
+        const coach = document.getElementById("coach-select").value;
+        const shareText = `My Political Dream Eleven: Goalkeeper - ${goalkeeper}, Coach - ${coach}. Build yours now!`;
+
+        if (navigator.share) {
+            navigator.share({
+                title: "Political Dream Eleven",
+                text: shareText,
+                url: window.location.href
+            }).catch(err => console.error("Error sharing", err));
+        } else {
+            alert("Sharing not supported on this browser. Copy this text: " + shareText);
+        }
+    });
+</script>
 </body>
 </html>
