@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Political Dream Eleven</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/tailwindcss/2.2.19/tailwind.min.css">
+    <script src="https://html2canvas.hertzen.com/dist/html2canvas.min.js"></script>
     <style>
         body {
             background: linear-gradient(to right, #ff7e5f, #feb47b);
@@ -12,7 +13,7 @@
             font-family: Arial, sans-serif;
         }
         .container {
-            max-width: 600px;
+            max-width: 800px;
             margin: auto;
             background: white;
             padding: 20px;
@@ -20,6 +21,9 @@
             box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
         }
         .player-card {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
             background: #f8f9fa;
             padding: 15px;
             border-radius: 10px;
@@ -31,52 +35,69 @@
             height: 80px;
             object-fit: cover;
             border-radius: 50%;
-            display: block;
-            margin: auto;
+        }
+        .coach-card {
+            margin-top: 20px;
+            padding: 15px;
+            background: #e3f2fd;
+            border-radius: 10px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
         }
     </style>
 </head>
 <body>
-    <div class="container">
+    <div class="container" id="capture">
         <h1 class="text-3xl font-bold mb-5">Political Dream Eleven</h1>
         
         <div class="player-card">
             <input type="file" id="goalkeeper-img" accept="image/*">
-            <img id="goalkeeper-preview" src="" alt="Goalkeeper" class="hidden">
-            <p class="font-semibold">Goalkeeper</p>
-            <select class="border p-1 mt-2 w-full" id="goalkeeper-select"></select>
+            <img id="goalkeeper-preview" src="" class="hidden">
+            <input type="text" id="goalkeeper-name" placeholder="Enter Goalkeeper Name" class="border p-1">
         </div>
         
-        <div class="player-card">
+        <div id="players-list"></div>
+        
+        <div class="coach-card">
             <input type="file" id="coach-img" accept="image/*">
-            <img id="coach-preview" src="" alt="Coach" class="hidden">
-            <p class="font-semibold">Coach</p>
-            <select class="border p-1 mt-2 w-full" id="coach-select"></select>
+            <img id="coach-preview" src="" class="hidden">
+            <select id="coach-select" class="border p-1">
+                <option>Select Coach</option>
+                <option>Coach 1</option>
+                <option>Coach 2</option>
+            </select>
         </div>
-        
-        <button id="share-button" class="mt-5 bg-blue-500 text-white py-2 px-4 rounded">Share Your Dream Eleven</button>
+
+        <button id="save-button" class="mt-5 bg-green-500 text-white py-2 px-4 rounded">Save as Image</button>
+        <button id="share-button" class="mt-5 bg-blue-500 text-white py-2 px-4 rounded">Share</button>
     </div>
     
     <script>
         const politicians = [
-            "Sheikh Hasina", "Khaleda Zia", "Sajib Wazed Joy", "Obaidul Quader", "Mirza Fakhrul Islam Alamgir"
+            "নাহিদ ইসলাম", "রফিকুল ইসলাম", "মিজানুর রহমান", "সাইফুল ইসলাম", "জামিল হোসেন",
+            "মোহাম্মদ আজাদ", "সাইদুর রহমান", "রাকিবুল হাসান", "তানভীর মাহমুদ", "সেলিম আহমেদ"
         ];
 
-        function populateSelect(id) {
-            const select = document.getElementById(id);
-            select.innerHTML = '<option>Select Politician</option>';
-            politicians.forEach(politician => {
-                let option = document.createElement("option");
-                option.textContent = politician;
-                select.appendChild(option);
-            });
+        function createPlayerCards() {
+            const container = document.getElementById("players-list");
+            for (let i = 0; i < 10; i++) {
+                const div = document.createElement("div");
+                div.classList.add("player-card");
+                div.innerHTML = `
+                    <input type="file" class="player-img" accept="image/*">
+                    <img class="player-preview hidden">
+                    <select class="player-select border p-1">
+                        ${politicians.map(name => `<option>${name}</option>`).join('')}
+                    </select>
+                `;
+                container.appendChild(div);
+            }
         }
 
-        function previewImage(inputId, imgId) {
-            document.getElementById(inputId).addEventListener("change", function(event) {
+        function previewImage(inputSelector, imgSelector) {
+            document.querySelector(inputSelector).addEventListener("change", function(event) {
                 const reader = new FileReader();
                 reader.onload = function() {
-                    const img = document.getElementById(imgId);
+                    const img = document.querySelector(imgSelector);
                     img.src = reader.result;
                     img.classList.remove("hidden");
                 }
@@ -84,24 +105,23 @@
             });
         }
 
-        previewImage("goalkeeper-img", "goalkeeper-preview");
-        previewImage("coach-img", "coach-preview");
+        previewImage("#goalkeeper-img", "#goalkeeper-preview");
+        previewImage("#coach-img", "#coach-preview");
 
-        populateSelect("goalkeeper-select");
-        populateSelect("coach-select");
+        document.getElementById("save-button").addEventListener("click", () => {
+            html2canvas(document.getElementById("capture")).then(canvas => {
+                let link = document.createElement("a");
+                link.download = "dream-eleven.png";
+                link.href = canvas.toDataURL("image/png");
+                link.click();
+            });
+        });
 
         document.getElementById("share-button").addEventListener("click", () => {
-            const goalkeeper = document.getElementById("goalkeeper-select").value;
-            const coach = document.getElementById("coach-select").value;
-            const shareText = `My Political Dream Eleven: Goalkeeper - ${goalkeeper}, Coach - ${coach}. Build yours now!`;
-            const url = window.location.href;
-            
-            const facebookShare = `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(url)}`;
-            const twitterShare = `https://twitter.com/intent/tweet?text=${encodeURIComponent(shareText)}&url=${encodeURIComponent(url)}`;
-            const whatsappShare = `https://api.whatsapp.com/send?text=${encodeURIComponent(shareText + ' ' + url)}`;
-            
-            window.open(facebookShare, '_blank');
+            alert("Share feature coming soon!");
         });
+
+        createPlayerCards();
     </script>
 </body>
 </html>
