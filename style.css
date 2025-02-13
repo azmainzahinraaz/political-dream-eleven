@@ -1,18 +1,45 @@
-body {
-    font-family: Arial, sans-serif;
-    text-align: center;
-}
-#team-formation {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 10px;
-}
-.position {
-    padding: 10px;
-    border: 2px solid black;
-    width: 200px;
-    text-align: center;
-    background-color: lightgray;
-    cursor: pointer;
-}
+<style>
+    body {
+        background: linear-gradient(to right, #ff7e5f, #feb47b);
+        text-align: center;
+        font-family: Arial, sans-serif;
+    }
+    .container {
+        max-width: 900px;
+        margin: auto;
+        background: white;
+        padding: 20px;
+        border-radius: 10px;
+        box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+    }
+    .formation-4-4-2 {
+        display: grid;
+        grid-template-rows: repeat(5, auto);
+        grid-template-columns: repeat(4, 1fr);
+        gap: 10px;
+        justify-items: center;
+    }
+    .goalkeeper {
+        grid-column: span 4;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+    }
+    .coach {
+        grid-column: span 1;
+        align-self: center;
+        margin-left: auto;
+    }
+    .player-card img, .goalkeeper img, .coach-card img {
+        width: 100px;
+        height: 100px;
+        object-fit: cover;
+        border-radius: 50%;
+        display: none;
+    }
+    .button-group {
+        display: flex;
+        justify-content: center;
+        gap: 10px;
+    }
+</style>
