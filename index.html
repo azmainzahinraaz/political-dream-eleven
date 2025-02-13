@@ -20,37 +20,6 @@
             border-radius: 10px;
             box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
         }
-        .formation {
-            display: grid;
-            gap: 10px;
-            margin-top: 20px;
-        }
-        .player-card {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            background: #f8f9fa;
-            padding: 10px;
-            border-radius: 10px;
-            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-        }
-        img {
-            width: 80px;
-            height: 80px;
-            object-fit: cover;
-            border-radius: 50%;
-            display: none;
-        }
-        input[type="file"] {
-            display: none;
-        }
-        .upload-btn {
-            background: #007bff;
-            color: white;
-            padding: 5px 10px;
-            border-radius: 5px;
-            cursor: pointer;
-        }
         .formation-4-4-2 {
             display: grid;
             grid-template-rows: repeat(5, auto);
@@ -94,23 +63,27 @@
     </div>
     
     <script>
-        const politicians = [
-            "নাহিদ ইসলাম", "রফিকুল ইসলাম", "মিজানুর রহমান", "সাইফুল ইসলাম", "জামিল হোসেন",
-            "মোহাম্মদ আজাদ", "সাইদুর রহমান", "রাকিবুল হাসান", "তানভীর মাহমুদ", "সেলিম আহমেদ"
-        ];
-
         function createPlayerCards() {
             const container = document.getElementById("players-list");
             const positions = ["ST", "ST", "LM", "CM", "CM", "RM", "LB", "CB", "CB", "RB"];
             
-            positions.forEach((position, index) => {
+            positions.forEach(position => {
                 const div = document.createElement("div");
                 div.classList.add("player-card");
                 div.innerHTML = `
                     <label class="upload-btn">Upload<input type="file" class="player-img" accept="image/*"></label>
                     <img class="player-preview">
                     <select class="player-select border p-1">
-                        ${politicians.map(name => `<option>${name}</option>`).join('')}
+                        <option>নাহিদ ইসলাম</option>
+                        <option>রফিকুল ইসলাম</option>
+                        <option>মিজানুর রহমান</option>
+                        <option>সাইফুল ইসলাম</option>
+                        <option>জামিল হোসেন</option>
+                        <option>মোহাম্মদ আজাদ</option>
+                        <option>সাইদুর রহমান</option>
+                        <option>রাকিবুল হাসান</option>
+                        <option>তানভীর মাহমুদ</option>
+                        <option>সেলিম আহমেদ</option>
                     </select>
                     <p class="font-bold">${position}</p>
                 `;
@@ -141,8 +114,19 @@
             });
         });
 
-        document.getElementById("share-button").addEventListener("click", () => {
-            alert("Share feature coming soon!");
+        document.getElementById("share-button").addEventListener("click", async () => {
+            const captureElement = document.getElementById("capture");
+            html2canvas(captureElement).then(async (canvas) => {
+                canvas.toBlob(async (blob) => {
+                    const file = new File([blob], "dream-eleven.png", { type: "image/png" });
+                    if (navigator.canShare && navigator.canShare({ files: [file] })) {
+                        await navigator.share({ files: [file], title: "Political Dream Eleven", text: "Here is my dream team!" });
+                    } else {
+                        const url = URL.createObjectURL(blob);
+                        window.open(url, "_blank");
+                    }
+                });
+            });
         });
 
         createPlayerCards();
