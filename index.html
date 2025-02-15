@@ -1,4 +1,4 @@
-<!DOCTYPE html> 
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -71,22 +71,12 @@
         .save-share {
             margin-top: 20px;
         }
+
         input[type="file"] {
             display: none;
         }
         input[type="file"] + .preview {
             cursor: pointer;
-        }
-        .live-numbers {
-            position: fixed;
-            bottom: 20px;
-            right: 20px;
-            background-color: white;
-            padding: 10px;
-            border-radius: 5px;
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-            z-index: 10;
-            text-align: left;
         }
     </style>
 </head>
@@ -123,17 +113,48 @@
             </div>
         </div>
     </div>
-    <div class="live-numbers" id="liveNumbers">
-        <strong>Live Users:</strong>
-        <span id="userCount">0</span>
+    <div class="save-share">
+        <button onclick="saveAsImage()">Save as PNG</button>
+        <button onclick="shareOnFacebook()">Share on Facebook</button>
+        <button onclick="shareOnLinkedIn()">Share on LinkedIn</button>
     </div>
     <script>
-        let userCount = 0;
-        function updateUserCount() {
-            userCount++;
-            document.getElementById('userCount').innerText = userCount;
+        document.querySelectorAll('input[type="file"]').forEach(input => {
+            input.addEventListener('change', function(e) {
+                const preview = this.previousElementSibling;
+                const file = e.target.files[0];
+                if (file) {
+                    const reader = new FileReader();
+                    reader.onload = (e) => preview.src = e.target.result;
+                    reader.readAsDataURL(file);
+                }
+            });
+        });
+
+        function saveAsImage() {
+            html2canvas(document.querySelector(".pitch"), {
+                scale: 3,  // Increased scale for better resolution
+                width: 1200, // Increased canvas width
+                height: 900, // Increased canvas height
+                useCORS: true // Enable CORS for external images
+            }).then(canvas => {
+                let link = document.createElement("a");
+                link.href = canvas.toDataURL("image/png");  // Use PNG format for better quality
+                link.download = "Political_Dream_XI.png";   // Download as PNG
+                link.click();
+            });
         }
-        setInterval(updateUserCount, 5000);
+
+        function shareOnFacebook() {
+            let url = encodeURIComponent(window.location.href);
+            window.open(`https://www.facebook.com/sharer/sharer.php?u=${url}`, '_blank');
+        }
+
+        function shareOnLinkedIn() {
+            let url = encodeURIComponent(window.location.href);
+            window.open(`https://www.linkedin.com/sharing/share-offsite/?url=${url}`, '_blank');
+        }
     </script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/0.5.0-beta4/html2canvas.min.js"></script>
 </body>
 </html>
