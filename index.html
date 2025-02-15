@@ -18,6 +18,22 @@
             border-radius: 10px;
             padding: 10px;
         }
+        h1 {
+            position: absolute;
+            top: 10px;
+            left: 50%;
+            transform: translateX(-50%);
+            color: white;
+            font-size: 36px;
+        }
+        h1 span {
+            display: inline-block;
+        }
+        h1 img {
+            height: 40px;
+            margin-left: 10px;
+            vertical-align: middle;
+        }
         .formation {
             position: relative;
             height: 100%;
@@ -33,7 +49,7 @@
         .strikers { top: 10%; }
         .midfielders { top: 30%; }
         .defenders { top: 50%; }
-        .goalkeeper { top: 67%; left: ৫০%; transform: translateX(-50%); position: absolute; }  /* গোলকিপারকে ডান দিকে আরও কিছুটা সরানো হয়েছে */
+        .goalkeeper { top: 67%; left: 49%; transform: translateX(-50%); position: absolute; }
         .coach { top: 80%; left: 10%; position: absolute; }
         .player {
             text-align: center;
@@ -65,8 +81,10 @@
     </style>
 </head>
 <body>
-    <h1>Political Dream XI</h1>
     <div class="pitch">
+        <h1>
+            <span>Political Dream XI</span>
+        </h1>
         <div class="formation">
             <div class="row strikers">
                 <div class="player"><img class="preview" onclick="document.getElementById('striker1').click();"><input type="file" id="striker1"><input type="text" placeholder="Striker 1"></div>
@@ -85,7 +103,10 @@
                 <div class="player"><img class="preview" onclick="document.getElementById('def4').click();"><input type="file" id="def4"><input type="text" placeholder="Def 4"></div>
             </div>
             <div class="row goalkeeper">
-                <div class="player"><img class="preview" onclick="document.getElementById('goalkeeper').click();"><input type="file" id="goalkeeper"><input type="text" placeholder="Goalkeeper" readonly></div>
+                <div class="player">
+                    <img class="preview" onclick="document.getElementById('goalkeeper').click();"><input type="file" id="goalkeeper">
+                    <input type="text" placeholder="Goalkeeper" />
+                </div>
             </div>
             <div class="coach">
                 <div class="player"><img class="preview" onclick="document.getElementById('coach').click();"><input type="file" id="coach"><input type="text" value="Dr. Yunus" readonly></div>
@@ -93,7 +114,7 @@
         </div>
     </div>
     <div class="save-share">
-        <button onclick="saveAsImage()">Save as JPG</button>
+        <button onclick="saveAsImage()">Save as PNG</button>
         <button onclick="shareOnFacebook()">Share on Facebook</button>
         <button onclick="shareOnLinkedIn()">Share on LinkedIn</button>
     </div>
@@ -111,10 +132,10 @@
         });
 
         function saveAsImage() {
-            html2canvas(document.querySelector(".pitch")).then(canvas => {
+            html2canvas(document.querySelector(".pitch"), { scale: 2 }).then(canvas => {
                 let link = document.createElement("a");
-                link.href = canvas.toDataURL("image/jpeg");
-                link.download = "Political_Dream_XI.jpg";
+                link.href = canvas.toDataURL("image/png");  // PNG ফরম্যাট ব্যবহার করছি
+                link.download = "Political_Dream_XI.png";   // PNG আউটপুট
                 link.click();
             });
         }
