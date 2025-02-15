@@ -132,10 +132,15 @@
         });
 
         function saveAsImage() {
-            html2canvas(document.querySelector(".pitch"), { scale: 2 }).then(canvas => {
+            html2canvas(document.querySelector(".pitch"), {
+                scale: 3,  // Increased scale for better resolution
+                width: 1200, // Increased canvas width
+                height: 900, // Increased canvas height
+                useCORS: true // Enable CORS for external images
+            }).then(canvas => {
                 let link = document.createElement("a");
-                link.href = canvas.toDataURL("image/png");  // PNG ফরম্যাট ব্যবহার করছি
-                link.download = "Political_Dream_XI.png";   // PNG আউটপুট
+                link.href = canvas.toDataURL("image/png");  // Use PNG format for better quality
+                link.download = "Political_Dream_XI.png";   // Download as PNG
                 link.click();
             });
         }
