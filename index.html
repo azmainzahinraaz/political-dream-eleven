@@ -12,7 +12,7 @@
         .pitch {
             background: #2E7D32;
             width: 1200px;
-            height: 950px; /* Increased height for better visibility */
+            height: 900px;
             margin: 20px auto;
             position: relative;
             border-radius: 10px;
@@ -25,6 +25,14 @@
             transform: translateX(-50%);
             color: white;
             font-size: 36px;
+        }
+        h1 span {
+            display: inline-block;
+        }
+        h1 img {
+            height: 40px;
+            margin-left: 10px;
+            vertical-align: middle;
         }
         .formation {
             position: relative;
@@ -41,8 +49,8 @@
         .strikers { top: 10%; }
         .midfielders { top: 30%; }
         .defenders { top: 50%; }
-        .goalkeeper { top: 70%; left: 50%; transform: translateX(-50%); position: absolute; }
-        .coach { top: 85%; left: 10%; position: absolute; }
+        .goalkeeper { top: 67%; left: 50%; transform: translateX(-50%); position: absolute; }
+        .coach { top: 80%; left: 10%; position: absolute; }
         .player {
             text-align: center;
             color: white;
@@ -73,7 +81,7 @@
     </style>
 </head>
 <body>
-    <div class="pitch" id="pitch">
+    <div class="pitch">
         <h1>
             <span>Political Dream XI</span>
         </h1>
@@ -109,12 +117,8 @@
         <button onclick="saveAsImage()">Save as PNG</button>
         <button onclick="shareOnFacebook()">Share on Facebook</button>
         <button onclick="shareOnLinkedIn()">Share on LinkedIn</button>
-        <p>Save Count: <span id="saveCount">0</span></p>
     </div>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
     <script>
-        let saveCount = 0; // Initialize save count
-
         document.querySelectorAll('input[type="file"]').forEach(input => {
             input.addEventListener('change', function(e) {
                 const preview = this.previousElementSibling;
@@ -128,32 +132,29 @@
         });
 
         function saveAsImage() {
-            html2canvas(document.querySelector("#pitch"), {
-                scale: 2, // Adjust scale for better resolution
+            html2canvas(document.querySelector(".pitch"), {
+                scale: 3,  // Increased scale for better resolution
+                width: 1200, // Increased canvas width
+                height: 900, // Increased canvas height
                 useCORS: true // Enable CORS for external images
             }).then(canvas => {
-                const link = document.createElement("a");
-                link.href = canvas.toDataURL("image/png");
-                link.download = "Political_Dream_XI.png";
+                let link = document.createElement("a");
+                link.href = canvas.toDataURL("image/png");  // Use PNG format for better quality
+                link.download = "Political_Dream_XI.png";   // Download as PNG
                 link.click();
-
-                // Increment save count and update the display
-                saveCount++;
-                document.getElementById("saveCount").innerText = saveCount;
-            }).catch(err => {
-                console.error("Error generating canvas:", err);
             });
         }
 
         function shareOnFacebook() {
-            const url = encodeURIComponent(window.location.href);
+            let url = encodeURIComponent(window.location.href);
             window.open(`https://www.facebook.com/sharer/sharer.php?u=${url}`, '_blank');
         }
 
         function shareOnLinkedIn() {
-            const url = encodeURIComponent(window.location.href);
+            let url = encodeURIComponent(window.location.href);
             window.open(`https://www.linkedin.com/sharing/share-offsite/?url=${url}`, '_blank');
         }
     </script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/0.5.0-beta4/html2canvas.min.js"></script>
 </body>
 </html>
