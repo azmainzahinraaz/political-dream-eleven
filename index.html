@@ -12,7 +12,7 @@
         .pitch {
             background: #2E7D32;
             width: 1200px;
-            height: 900px;
+            height: 950px; /* Increased height for better visibility */
             margin: 20px auto;
             position: relative;
             border-radius: 10px;
@@ -41,8 +41,8 @@
         .strikers { top: 10%; }
         .midfielders { top: 30%; }
         .defenders { top: 50%; }
-        .goalkeeper { top: 67%; left: 50%; transform: translateX(-50%); position: absolute; }
-        .coach { top: 80%; left: 10%; position: absolute; }
+        .goalkeeper { top: 70%; left: 50%; transform: translateX(-50%); position: absolute; }
+        .coach { top: 85%; left: 10%; position: absolute; }
         .player {
             text-align: center;
             color: white;
@@ -113,6 +113,8 @@
     </div>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
     <script>
+        let saveCount = 0; // Initialize save count
+
         document.querySelectorAll('input[type="file"]').forEach(input => {
             input.addEventListener('change', function(e) {
                 const preview = this.previousElementSibling;
@@ -134,6 +136,10 @@
                 link.href = canvas.toDataURL("image/png");
                 link.download = "Political_Dream_XI.png";
                 link.click();
+
+                // Increment save count and update the display
+                saveCount++;
+                document.getElementById("saveCount").innerText = saveCount;
             }).catch(err => {
                 console.error("Error generating canvas:", err);
             });
