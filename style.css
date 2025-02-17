@@ -1,45 +1,81 @@
-<style>
-    body {
-        background: linear-gradient(to right, #ff7e5f, #feb47b);
-        text-align: center;
-        font-family: Arial, sans-serif;
-    }
-    .container {
-        max-width: 900px;
-        margin: auto;
-        background: white;
-        padding: 20px;
-        border-radius: 10px;
-        box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
-    }
-    .formation-4-4-2 {
-        display: grid;
-        grid-template-rows: repeat(5, auto);
-        grid-template-columns: repeat(4, 1fr);
-        gap: 10px;
-        justify-items: center;
-    }
-    .goalkeeper {
-        grid-column: span 4;
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-    }
-    .coach {
-        grid-column: span 1;
-        align-self: center;
-        margin-left: auto;
-    }
-    .player-card img, .goalkeeper img, .coach-card img {
-        width: 100px;
-        height: 100px;
-        object-fit: cover;
-        border-radius: 50%;
-        display: none;
-    }
-    .button-group {
-        display: flex;
-        justify-content: center;
-        gap: 10px;
-    }
-</style>
+body {
+    background: linear-gradient(to right, #ff7e5f, #feb47b);
+    text-align: center;
+    font-family: Arial, sans-serif;
+    margin: 0; /* Remove default margin */
+    padding: 20px; /* Add padding to body for spacing */
+}
+
+.container {
+    max-width: 900px;
+    margin: auto;
+    background: white;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.formation-4-4-2 {
+    display: grid;
+    grid-template-rows: repeat(5, auto);
+    grid-template-columns: repeat(4, 1fr);
+    gap: 10px;
+    justify-items: center;
+}
+
+.goalkeeper {
+    grid-column: span 4;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.coach {
+    grid-column: span 1;
+    align-self: center;
+    margin-left: auto;
+    display: flex;
+    flex-direction: column;
+    align-items: center; /* Center align coach's image and name */
+}
+
+.player-card img, .goalkeeper img, .coach-card img {
+    width: 100px;
+    height: 100px;
+    object-fit: cover;
+    border-radius: 50%;
+    display: none; /* Initially hidden */
+    transition: transform 0.3s; /* Smooth scaling effect */
+}
+
+.player-card img:hover, .goalkeeper img:hover, .coach-card img:hover {
+    transform: scale(1.1); /* Scale up on hover */
+}
+
+.player-name, .coach-name {
+    font-size: 1rem; /* Adjust font size */
+    font-weight: bold; /* Make names bold */
+    color: #333; /* Darker color for better readability */
+    margin-top: 5px; /* Space between image and name */
+}
+
+.button-group {
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+    margin-top: 20px; /* Add space above button group */
+}
+
+.button-group button {
+    padding: 10px 20px; /* Add padding for buttons */
+    border: none;
+    border-radius: 5px;
+    background-color: #ff7e5f; /* Button background color */
+    color: white; /* Button text color */
+    cursor: pointer; /* Pointer cursor on hover */
+    transition: background-color 0.3s; /* Smooth background color transition */
+}
+
+.button-group button:hover {
+    background-color: #feb47b; /* Change background color on hover */
+}
