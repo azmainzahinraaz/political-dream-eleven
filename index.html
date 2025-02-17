@@ -133,13 +133,22 @@
 
         function saveAsImage() {
             html2canvas(document.querySelector(".pitch"), {
-                scale: 3,  // Increased scale for better resolution
+                scale: 4,  // Increased scale for better resolution
                 width: 1200, // Increased canvas width
                 height: 900, // Increased canvas height
-                useCORS: true // Enable CORS for external images
+                useCORS: true, // Enable CORS for external images
+                logging: true, // Enable logging for debugging
+                allowTaint: true, // Allow taint to handle external images
+                imageTimeout: 15000, // Increase timeout for image loading
+                onclone: function(clonedDoc) {
+                    // Ensure all images are loaded before capturing
+                    clonedDoc.querySelectorAll('img').forEach(img => {
+                        img.crossOrigin = 'anonymous';
+                    });
+                }
             }).then(canvas => {
                 let link = document.createElement("a");
-                link.href = canvas.toDataURL("image/png");  // Use PNG format for better quality
+                link.href = canvas.toDataURL("image/png", 1.0);  // Use PNG format with maximum quality
                 link.download = "Political_Dream_XI.png";   // Download as PNG
                 link.click();
             });
