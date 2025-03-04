@@ -8,6 +8,8 @@
         body {
             text-align: center;
             background-color: #4CAF50;
+            margin: 0;
+            padding: 0;
         }
         .pitch {
             background: #2E7D32;
@@ -16,15 +18,16 @@
             margin: 20px auto;
             position: relative;
             border-radius: 10px;
-            padding: 10px;
+            padding: 0; /* Remove padding to avoid white borders */
         }
         h1 {
             position: absolute;
-            top: 10px;
+            top: 30px; /* Increased top value to add more space */
             left: 50%;
             transform: translateX(-50%);
             color: white;
             font-size: 36px;
+            margin: 0; /* Remove default margin */
         }
         h1 span {
             display: inline-block;
@@ -46,11 +49,11 @@
             justify-content: center;
             gap: 60px;
         }
-        .strikers { top: 10%; }
-        .midfielders { top: 30%; }
-        .defenders { top: 50%; }
-        .goalkeeper { top: 67%; left: 49%; transform: translateX(-50%); position: absolute; }
-        .coach { top: 80%; left: 10%; position: absolute; }
+        .strikers { top: 15%; } /* Adjusted to accommodate the header */
+        .midfielders { top: 35%; }
+        .defenders { top: 55%; }
+        .goalkeeper { top: 72%; left: 49%; transform: translateX(-50%); position: absolute; }
+        .coach { top: 85%; left: 10%; position: absolute; }
         .player {
             text-align: center;
             color: white;
@@ -133,9 +136,9 @@
 
         function saveAsImage() {
             html2canvas(document.querySelector(".pitch"), {
-                scale: 4,  // Increased scale for better resolution
-                width: 1200, // Increased canvas width
-                height: 900, // Increased canvas height
+                scale: 2,  // Increased scale for better resolution
+                width: 1200, // Match the pitch width
+                height: 900, // Match the pitch height
                 useCORS: true, // Enable CORS for external images
                 logging: true, // Enable logging for debugging
                 allowTaint: true, // Allow taint to handle external images
