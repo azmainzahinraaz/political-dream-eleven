@@ -133,22 +133,31 @@
                         const img = new Image();
                         img.src = e.target.result;
                         img.onload = () => {
-                            // Create a canvas to fit the image inside the circle
+                            // Create a canvas to crop the image to 1:1 aspect ratio
                             const canvas = document.createElement('canvas');
-                            canvas.width = 80; // Match the preview size
-                            canvas.height = 80;
+                            const size = Math.min(img.width, img.height); // Use the smaller dimension
+                            canvas.width = size;
+                            canvas.height = size;
                             const ctx = canvas.getContext('2d');
 
-                            // Calculate scaling to fit the image inside the circle
-                            const scale = Math.max(80 / img.width, 80 / img.height);
-                            const width = img.width * scale;
-                            const height = img.height * scale;
+                            // Calculate the starting point to crop the center
+                            const offsetX = (img.width - size) / 2;
+                            const offsetY = (img.height - size) / 2;
 
-                            // Draw the image centered on the canvas
-                            ctx.drawImage(img, (80 - width) / 2, (80 - height) / 2, width, height);
+                            // Draw the cropped image on the canvas
+                            ctx.drawImage(img, offsetX, offsetY, size, size, 0, 0, size, size);
 
-                            // Set the cropped image as the preview
-                            preview.src = canvas.toDataURL();
+                            // Resize the cropped image to fit the preview circle
+                            const previewCanvas = document.createElement('canvas');
+                            previewCanvas.width = 80;
+                            previewCanvas.height = 80;
+                            const previewCtx = previewCanvas.getContext('2d');
+
+                            // Draw the cropped image onto the preview canvas
+                            previewCtx.drawImage(canvas, 0, 0, size, size, 0, 0, 80, 80);
+
+                            // Set the preview image
+                            preview.src = previewCanvas.toDataURL();
                         };
                     };
                     reader.readAsDataURL(file);
