@@ -18,16 +18,16 @@
             margin: 20px auto;
             position: relative;
             border-radius: 10px;
-            padding: 0; /* Remove padding to avoid white borders */
+            padding: 0;
         }
         h1 {
             position: absolute;
-            top: 30px; /* Increased top value to add more space */
+            top: 30px;
             left: 50%;
             transform: translateX(-50%);
             color: white;
             font-size: 36px;
-            margin: 0; /* Remove default margin */
+            margin: 0;
         }
         h1 span {
             display: inline-block;
@@ -49,7 +49,7 @@
             justify-content: center;
             gap: 60px;
         }
-        .strikers { top: 15%; } /* Adjusted to accommodate the header */
+        .strikers { top: 15%; }
         .midfielders { top: 35%; }
         .defenders { top: 55%; }
         .goalkeeper { top: 72%; left: 49%; transform: translateX(-50%); position: absolute; }
@@ -136,23 +136,37 @@
 
         function saveAsImage() {
             html2canvas(document.querySelector(".pitch"), {
-                scale: 2,  // Increased scale for better resolution
-                width: 1200, // Match the pitch width
-                height: 900, // Match the pitch height
-                useCORS: true, // Enable CORS for external images
-                logging: true, // Enable logging for debugging
-                allowTaint: true, // Allow taint to handle external images
-                imageTimeout: 15000, // Increase timeout for image loading
+                scale: 2,
+                width: 1200,
+                height: 900,
+                useCORS: true,
+                logging: true,
+                allowTaint: true,
+                imageTimeout: 15000,
                 onclone: function(clonedDoc) {
-                    // Ensure all images are loaded before capturing
                     clonedDoc.querySelectorAll('img').forEach(img => {
                         img.crossOrigin = 'anonymous';
                     });
                 }
             }).then(canvas => {
+                // Create a new canvas for 1:1 aspect ratio
+                const squareSize = Math.min(canvas.width, canvas.height);
+                const squareCanvas = document.createElement('canvas');
+                squareCanvas.width = squareSize;
+                squareCanvas.height = squareSize;
+                const ctx = squareCanvas.getContext('2d');
+
+                // Calculate the starting point to crop the center
+                const offsetX = (canvas.width - squareSize) / 2;
+                const offsetY = (canvas.height - squareSize) / 2;
+
+                // Draw the center part of the original canvas
+                ctx.drawImage(canvas, offsetX, offsetY, squareSize, squareSize, 0, 0, squareSize, squareSize);
+
+                // Download the square image
                 let link = document.createElement("a");
-                link.href = canvas.toDataURL("image/png", 1.0);  // Use PNG format with maximum quality
-                link.download = "Political_Dream_XI.png";   // Download as PNG
+                link.href = squareCanvas.toDataURL("image/png", 1.0);
+                link.download = "Political_Dream_XI_Square.png";
                 link.click();
             });
         }
