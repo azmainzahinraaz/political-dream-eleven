@@ -70,6 +70,7 @@
             border-radius: 50%;
             border: 2px solid white;
             object-fit: cover;
+            background-color: transparent; /* Ensure no white background */
         }
         .save-share {
             margin-top: 20px;
@@ -132,19 +133,19 @@
                         const img = new Image();
                         img.src = e.target.result;
                         img.onload = () => {
-                            // Create a square canvas
-                            const squareSize = Math.min(img.width, img.height);
+                            // Create a canvas to fit the image inside the circle
                             const canvas = document.createElement('canvas');
-                            canvas.width = squareSize;
-                            canvas.height = squareSize;
+                            canvas.width = 80; // Match the preview size
+                            canvas.height = 80;
                             const ctx = canvas.getContext('2d');
 
-                            // Calculate the starting point to crop the center
-                            const offsetX = (img.width - squareSize) / 2;
-                            const offsetY = (img.height - squareSize) / 2;
+                            // Calculate scaling to fit the image inside the circle
+                            const scale = Math.max(80 / img.width, 80 / img.height);
+                            const width = img.width * scale;
+                            const height = img.height * scale;
 
-                            // Draw the center part of the image
-                            ctx.drawImage(img, offsetX, offsetY, squareSize, squareSize, 0, 0, squareSize, squareSize);
+                            // Draw the image centered on the canvas
+                            ctx.drawImage(img, (80 - width) / 2, (80 - height) / 2, width, height);
 
                             // Set the cropped image as the preview
                             preview.src = canvas.toDataURL();
