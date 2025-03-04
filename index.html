@@ -128,7 +128,28 @@
                 const file = e.target.files[0];
                 if (file) {
                     const reader = new FileReader();
-                    reader.onload = (e) => preview.src = e.target.result;
+                    reader.onload = (e) => {
+                        const img = new Image();
+                        img.src = e.target.result;
+                        img.onload = () => {
+                            // Create a square canvas
+                            const squareSize = Math.min(img.width, img.height);
+                            const canvas = document.createElement('canvas');
+                            canvas.width = squareSize;
+                            canvas.height = squareSize;
+                            const ctx = canvas.getContext('2d');
+
+                            // Calculate the starting point to crop the center
+                            const offsetX = (img.width - squareSize) / 2;
+                            const offsetY = (img.height - squareSize) / 2;
+
+                            // Draw the center part of the image
+                            ctx.drawImage(img, offsetX, offsetY, squareSize, squareSize, 0, 0, squareSize, squareSize);
+
+                            // Set the cropped image as the preview
+                            preview.src = canvas.toDataURL();
+                        };
+                    };
                     reader.readAsDataURL(file);
                 }
             });
@@ -149,24 +170,9 @@
                     });
                 }
             }).then(canvas => {
-                // Create a new canvas for 1:1 aspect ratio
-                const squareSize = Math.min(canvas.width, canvas.height);
-                const squareCanvas = document.createElement('canvas');
-                squareCanvas.width = squareSize;
-                squareCanvas.height = squareSize;
-                const ctx = squareCanvas.getContext('2d');
-
-                // Calculate the starting point to crop the center
-                const offsetX = (canvas.width - squareSize) / 2;
-                const offsetY = (canvas.height - squareSize) / 2;
-
-                // Draw the center part of the original canvas
-                ctx.drawImage(canvas, offsetX, offsetY, squareSize, squareSize, 0, 0, squareSize, squareSize);
-
-                // Download the square image
                 let link = document.createElement("a");
-                link.href = squareCanvas.toDataURL("image/png", 1.0);
-                link.download = "Political_Dream_XI_Square.png";
+                link.href = canvas.toDataURL("image/png", 1.0);
+                link.download = "Political_Dream_XI.png";
                 link.click();
             });
         }
